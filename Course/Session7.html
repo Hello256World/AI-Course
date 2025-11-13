@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fa" xml:lang="fa" dir="rtl"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>session7 – درس هوش مصنوعی</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-fa4b1673990fa3f7be976ac11d59a17c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content column-page" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><h1 style="text-align: center;" class="title display-7">
+جلسه ۷: امنیت سایبری و چالش‌های اخلاقی هوش مصنوعی
+</h1></header>
+
+
+
+
+<div style="text-align: center; margin-top: 2rem;">
+
+<h2 class="anchored">
+تحلیل آسیب‌پذیری مدل‌ها در برابر حملات متخاصم (Adversarial) و الزامات حقوقی و انطباق (Compliance)
+</h2>
+<p style="color: var(--color-text-muted); font-size: 1.1rem;">
+بررسی جامع حملات White-Box (PGD)، امنیت داده‌ها (Data Poisoning)، مکانیسم‌های حفظ حریم خصوصی (Differential Privacy) و الزامات حقوقی (GDPR و EU AI Act).
+</p>
+<hr style="width: 60%; margin: 2rem auto;">
+</div>
+<section class="section-card">
+<h3 id="section-1" class="anchored">
+۱. بخش اول: مفاهیم پایه: امنیت، حریم خصوصی و امنیت اطلاعات
+</h3>
+<p style="color: var(--color-text-muted); font-size: 1.1rem;">
+تحلیل جامع اصول <strong>سه‌گانه CIA</strong>، تمایز حیاتی بین <strong>امنیت (Security)</strong> و <strong>حریم خصوصی (Privacy)</strong> و ریشه‌یابی آسیب‌پذیری‌های هوش مصنوعی در معماری‌های یادگیری ماشین.
+</p>
+<h4 id="section-1-1" class="anchored">
+۱.۱. تعریف امنیت اطلاعات (Information Security) و سه اصل CIA Triad
+</h4>
+<dl>
+<dt>
+معماری بنیادی امنیت: CIA Triad
+</dt>
+<dd>
+<p>
+امنیت اطلاعات بر سه ستون اصلی استوار است: <strong>محرمانگی (Confidentiality - C)</strong>، <strong>یکپارچگی (Integrity - I)</strong> و <strong>در دسترس بودن (Availability - A)</strong>. حملات متخاصم علیه LLMها، اغلب با هدف نقض یکپارچگی (مانند Prompt Injection) یا محرمانگی (مانند Model Extraction) انجام می‌شوند.
+</p>
+</dd>
+</dl>
+<h4 id="section-1-2" class="anchored">
+۱.۲. تمایز حریم خصوصی (Privacy) و امنیت (Security)
+</h4>
+<dl>
+<dt>
+امنیت (Security) به عنوان یک ابزار؛ حریم خصوصی (Privacy) به عنوان یک هدف حقوقی
+</dt>
+<dd>
+<p>
+<strong>امنیت</strong> مجموعه‌ای از ابزارها و فرآیندها برای حفاظت از داده‌هاست (حفظ CIA). اما <strong>حریم خصوصی</strong> به حق فرد برای کنترل داده‌های خود اشاره دارد. حمله‌ای مانند <strong>Membership Inference</strong> امنیت را نقض نمی‌کند، بلکه حریم خصوصی را هدف قرار می‌دهد.
+</p>
+</dd>
+</dl>
+<h4 id="section-1-3" class="anchored">
+۱.۳. مکانیسم‌های حملات سایبری علیه LLMs/ML: ریشه‌های فنی آسیب‌پذیری
+</h4>
+<dl>
+<dt>
+ریشه‌های فنی آسیب‌پذیری در شبکه‌های عصبی غیرخطی
+</dt>
+<dd>
+<p>
+آسیب‌پذیری مدل‌ها در برابر <strong>Adversarial Attacks</strong> ریشه در <strong>غیرخطی بودن (Non-Linearity)</strong> توابع فعال‌سازی و <strong>بیش از حد پارامتری شدن (Over-Parameterization)</strong> دارد. این ویژگی‌ها مرزهای تصمیم‌گیری (Decision Boundary) را ناهموار کرده و اجازه می‌دهند اغتشاشات کوچک <span class="math inline">\((\epsilon)\)</span> منجر به تغییرات بزرگی در خروجی شوند:
+</p>
+<span class="math display">\[
+    \text{Attack Goal}: \underset{\mathbf{Y}_{target}}{\operatorname{argmax}} \, \mathcal{P}(\mathbf{Y} | \mathbf{P}, \mathbf{X} + \epsilon)
+    \]</span>
+</dd>
+</dl>
+</section>
+<section class="section-card">
+<h3 id="section-2" class="anchored">
+۲. بخش دوم: آسیب‌پذیری هوش مصنوعی و حملات متخاصم نوع صفر (Zero-Level Attacks)
+</h3>
+<p style="color: var(--color-text-muted); font-size: 1.1rem;">
+تحلیل مقدماتی حملات متخاصم و تمرکز بر حملات تزریق پرامپت که در لایه ورودی مدل‌ها رخ می‌دهد.
+</p>
+<h4 id="section-2-1" class="anchored">
+۲.۱. تعریف Adversarial Attack و Adversarial Example
+</h4>
+<dl>
+<dt>
+نمونه‌های خصمانه (Adversarial Examples)
+</dt>
+<dd>
+<p>
+یک <strong>Adversarial Example</strong> ورودی‌ای است که با افزودن یک نویز کوچک <span class="math inline">\((\epsilon)\)</span> به یک ورودی تمیز <span class="math inline">\((\mathbf{X})\)</span>, مدل را وادار به تولید یک خروجی اشتباه <span class="math inline">\((\mathbf{Y}_{target})\)</span> می‌کند، در حالی که <span class="math inline">\(\mathbf{X}\)</span> و <span class="math inline">\(\mathbf{X} + \epsilon\)</span> برای انسان یکسان به نظر می‌رسند.
+</p>
+</dd>
+</dl>
+<h4 id="section-2-2" class="anchored">
+۲.۲. حملات تزریق پرامپت (Prompt Injection) و دور زدن گاردریل
+</h4>
+<dl>
+<dt>
+تحلیل حملات مستقیم و غیرمستقیم
+</dt>
+<dd>
+<p>
+<strong>Prompt Injection</strong> نقض اصل یکپارچگی است که در آن کاربر، با دستکاری ورودی، دستورالعمل‌های اصلی <strong>System Prompt</strong> را Override می‌کند. حملات می‌توانند <strong>مستقیم</strong> (تزریق دستور در کوئری) یا <strong>غیرمستقیم</strong> (تزریق دستور در متن خارجی که مدل بازیابی می‌کند) باشند.
+</p>
+</dd>
+</dl>
+<h4 id="section-2-3" class="anchored">
+۲.۳. مکانیسم‌های دفاعی ساده در سطح پرامپت
+</h4>
+<dl>
+<dt>
+ایزوله‌سازی ورودی و متاپرامپتینگ
+</dt>
+<dd>
+<p>
+دفاع پایه شامل استفاده از <strong>جداکننده‌های قوی (Delimiters)</strong> مانند <code>&lt;USER_INPUT&gt;</code> برای ایزوله‌سازی داده‌های کاربر و استفاده از <strong>Meta-Prompting</strong> (دستورالعمل‌های سیستمی سطح بالا) برای تعریف اولویت فرمان‌های غیرقابل لغو.
+</p>
+</dd>
+</dl>
+</section>
+<section class="section-card">
+<h3 id="section-3" class="anchored">
+۳. بخش سوم: حملات White-Box علیه شبکه‌های عصبی (FGSM و PGD)
+</h3>
+<p style="color: var(--color-text-muted); font-size: 1.1rem;">
+تحلیل حملات قوی که نیاز به دسترسی به گرادیان (وزن‌ها) مدل دارند. این حملات پایه‌های ارزیابی <strong>Adversarial Robustness</strong> را تشکیل می‌دهند.
+</p>
+<h4 id="section-3-1" class="anchored">
+۳.۱. حمله FGSM (Fast Gradient Sign Method)
+</h4>
+<dl>
+<dt>
+تحلیل ریاضی و پیاده‌سازی گام به گام
+</dt>
+<dd>
+<p>
+FGSM یک حمله <strong>یک‌مرحله‌ای (One-Step)</strong> است که اغتشاش <span class="math inline">\((\epsilon)\)</span> را در جهت علامت گرادیان تابع هزینه <span class="math inline">\((\mathcal{J}(\mathbf{X}, y))\)</span> مدل تولید می‌کند. این حمله از سرعت بالایی برخوردار است:
+</p>
+<span class="math display">\[
+    \mathbf{X}_{adv} = \mathbf{X} + \epsilon \cdot \text{sign} \left( \nabla_{\mathbf{X}} \mathcal{J}(\mathbf{X}, y) \right)
+    \]</span>
+</dd>
+</dl>
+<h4 id="section-3-2" class="anchored">
+۳.۲. حمله PGD (Projected Gradient Descent)
+</h4>
+<dl>
+<dt>
+قوی‌ترین حمله تکراری (Iterative)
+</dt>
+<dd>
+<p>
+PGD یک حمله <strong>چندمرحله‌ای</strong> است که در هر گام، اغتشاش را در جهت گرادیان افزایش داده و سپس آن را به فضای مجاز (توپ <span class="math inline">\(\ell_{\infty}\)</span> یا <span class="math inline">\(\ell_2\)</span> با شعاع <span class="math inline">\(\epsilon\)</span>) پروجکت می‌کند. به دلیل تکرار و پروجکشن، PGD قوی‌ترین بنچمارک برای سنجش پایداری مدل است:
+</p>
+<span class="math display">\[
+    \mathbf{X}_{t+1}^{adv} = \text{Project}_{\mathbf{X}, \epsilon} \left( \mathbf{X}_t^{adv} + \alpha \cdot \text{sign} \left( \nabla_{\mathbf{X}} \mathcal{J}(\mathbf{X}_t^{adv}, y) \right) \right)
+    \]</span>
+</dd>
+</dl>
+<h4 id="section-3-3" class="anchored">
+۳.۳. مفهوم Epsilon (<span class="math inline">\(\epsilon\)</span>) و محدودیت بودجه نویز
+</h4>
+<dl>
+<dt>
+کنترل اندازه اغتشاش
+</dt>
+<dd>
+<p>
+پارامتر <span class="math inline">\(\epsilon\)</span> نشان‌دهنده <strong>حداکثر اندازه (Budget)</strong> مجاز برای اغتشاش در فضای ورودی است. در حملات White-Box، کوچک نگه داشتن <span class="math inline">\(\epsilon\)</span> (معمولاً در محدوده <span class="math inline">\(0.01\)</span> تا <span class="math inline">\(0.3\)</span>) تضمین می‌کند که اغتشاش برای انسان <strong>نامحسوس</strong> باقی بماند.
+</p>
+</dd>
+</dl>
+</section>
+<section class="section-card">
+<h3 id="section-4" class="anchored">
+۴. بخش چهارم: حملات Black-Box و تکنیک‌های پیشرفته سرقت مدل
+</h3>
+<p style="color: var(--color-text-muted); font-size: 1.1rem;">
+تحلیل حملاتی که مهاجم در آن‌ها دسترسی به پارامترهای مدل ندارد و باید گرادیان را تخمین بزند یا مدل را بدزدد.
+</p>
+<h4 id="section-4-1" class="anchored">
+۴.۱. حملات انتقال‌پذیر (Transferability Attacks)
+</h4>
+<dl>
+<dt>
+انتقال پذیری اغتشاشات
+</dt>
+<dd>
+<p>
+بر اساس خاصیت <strong>انتقال‌پذیری (Transferability)</strong>، یک نمونه Adversarial تولید شده علیه مدل <span class="math inline">\(\mathcal{M}_A\)</span> (که مهاجم به آن دسترسی دارد) اغلب می‌تواند مدل هدف <span class="math inline">\(\mathcal{M}_B\)</span> (که Black-Box است) را نیز فریب دهد. این موضوع به دلیل شباهت فضاهای تصمیم‌گیری در مدل‌های با معماری‌های مشابه است.
+</p>
+</dd>
+</dl>
+<h4 id="section-4-2" class="anchored">
+۴.۲. حملات کوئری-محور (Query-Based Attacks)
+</h4>
+<dl>
+<dt>
+تخمین گرادیان با کوئری
+</dt>
+<dd>
+<p>
+در حملات خالص Black-Box، مهاجم باید گرادیان <span class="math inline">\((\nabla_{\mathbf{X}})\)</span> را تخمین بزند. تکنیک‌هایی مانند <strong>SPSA (Simultaneous Perturbation Stochastic Approximation)</strong> با ارسال کوئری‌های متعدد و محاسبه میانگین اختلاف خروجی‌ها، گرادیان مدل را با دقت قابل قبولی تخمین می‌زنند.
+</p>
+</dd>
+</dl>
+<h4 id="section-4-3" class="anchored">
+۴.۳. حمله Model Extraction (سرقت مدل)
+</h4>
+<dl>
+<dt>
+بازسازی مدل از طریق API
+</dt>
+<dd>
+<p>
+حمله <strong>Model Extraction (Stealing)</strong> نقض اصل محرمانگی است. مهاجم با ارسال حجم زیادی از کوئری‌ها به API مدل هدف و مشاهده خروجی‌های آن، یک مجموعه داده مصنوعی ایجاد می‌کند. سپس با استفاده از این مجموعه داده، یک <strong>مدل شبیه (Surrogate Model)</strong> (معمولاً کوچک‌تر) آموزش می‌دهد که عملکرد مدل اصلی را تقلید کند و در واقع دانش مدل را سرقت می‌کند.
+</p>
+</dd>
+</dl>
+</section>
+<section class="section-card">
+<h3 id="section-5" class="anchored">
+۵. بخش پنجم: امنیت داده‌های آموزشی: حملات مسمومیت و Backdoor
+</h3>
+<p style="color: var(--color-text-muted); font-size: 1.1rem;">
+بررسی حملاتی که مستقیماً اصل یکپارچگی (Integrity) مجموعه داده آموزشی را هدف قرار می‌دهند و منجر به بایاس‌های پنهان و رفتارهای مخرب می‌شوند.
+</p>
+<h4 id="section-5-1" class="anchored">
+۵.۱. حمله Data Poisoning (مسمومیت داده)
+</h4>
+<dl>
+<dt>
+تزریق داده‌های مخرب به مجموعه آموزشی
+</dt>
+<dd>
+<p>
+<strong>Data Poisoning</strong> نقض اصل یکپارچگی است. مهاجم، داده‌های مخرب و برچسب‌گذاری شده‌ی نادرست را به مجموعه داده آموزشی تزریق می‌کند. هدف می‌تواند <strong>درجه‌ای</strong> (کاهش عملکرد کلی مدل در وظیفه اصلی) یا <strong>هدفمند</strong> (ایجاد یک آسیب‌پذیری خاص) باشد.
+</p>
+</dd>
+</dl>
+<h4 id="section-5-2" class="anchored">
+۵.۲. حملات Backdoor (در پشتی)
+</h4>
+<dl>
+<dt>
+آموزش مدل برای پاسخ هدفمند به یک محرک (Trigger)
+</dt>
+<dd>
+<p>
+حمله <strong>Backdoor</strong> نوعی Poisoning هدفمند است که در آن، داده‌های سمی شامل یک محرک (Trigger) خاص (مانند یک کلمه کلیدی یا یک کاراکتر خاص) است. مدل در شرایط عادی درست عمل می‌کند، اما به محض دیدن محرک، خروجی مخرب مورد نظر مهاجم را تولید می‌کند.
+</p>
+</dd>
+</dl>
+<h4 id="section-5-3" class="anchored">
+۵.۳. دفاع در برابر Poisoning: تشخیص ناهنجاری
+</h4>
+<dl>
+<dt>
+فیلترینگ و تشخیص ناهنجاری (Anomaly Detection)
+</dt>
+<dd>
+<p>
+دفاع شامل <strong>بازرسی داده‌ها</strong> قبل از آموزش و استفاده از تکنیک‌های <strong>تشخیص ناهنجاری (Anomaly Detection)</strong> و <strong>خوشه‌بندی (Clustering)</strong> برای شناسایی داده‌هایی است که از نظر آماری از توزیع اصلی مجموعه آموزشی منحرف شده‌اند و می‌توانند سمی باشند.
+</p>
+</dd>
+</dl>
+</section>
+<section class="section-card">
+<h3 id="section-6" class="anchored">
+۶. بخش ششم: حریم خصوصی و نشت اطلاعات (Model Inversion و Membership Inference)
+</h3>
+<p style="color: var(--color-text-muted); font-size: 1.1rem;">
+بررسی حملاتی که مستقیماً حریم خصوصی افراد موجود در داده‌های آموزشی را هدف قرار می‌دهند.
+</p>
+<h4 id="section-6-1" class="anchored">
+۶.۱. حمله Membership Inference
+</h4>
+<dl>
+<dt>
+تشخیص حضور یک داده در مجموعه آموزشی
+</dt>
+<dd>
+<p>
+در این حمله، مهاجم تلاش می‌کند تا مشخص کند که آیا یک رکورد داده خاص (مثلاً سوابق پزشکی یک فرد) در مجموعه داده آموزشی مدل وجود داشته است یا خیر. این حمله با مقایسه اعتماد به نفس (Confidence) مدل در پاسخ به داده هدف در مقابل داده‌هایی که مدل هرگز ندیده، انجام می‌شود.
+</p>
+</dd>
+</dl>
+<h4 id="section-6-2" class="anchored">
+۶.۲. حمله Model Inversion
+</h4>
+<dl>
+<dt>
+بازسازی داده‌های آموزشی حساس از خروجی مدل
+</dt>
+<dd>
+<p>
+حمله <strong>Model Inversion</strong> نقض جدی محرمانگی است. مهاجم با استفاده از اطلاعات عمومی یا دسترسی به خروجی‌های مدل، تلاش می‌کند تا ورودی‌های اصلی و حساس (مانند تصاویر چهره، کلمات عبور، یا متون اختصاصی) که در مجموعه آموزشی مدل وجود داشته‌اند را بازسازی کند.
+</p>
+</dd>
+</dl>
+<h4 id="section-6-3" class="anchored">
+۶.۳. تحلیل نشت اطلاعات در مکانیسم Attention
+</h4>
+<dl>
+<dt>
+نقش بردارهای Key و Query در افشای اطلاعات نهان
+</dt>
+<dd>
+<p>
+مکانیسم <strong>Self-Attention</strong> در ترانسفورمرها می‌تواند باعث نشت اطلاعات شود. <strong>بردار Query</strong> توکن ورودی می‌تواند به طور ناخواسته اطلاعات حساسی را از <strong>بردارهای Key/Value</strong> مربوط به توکن‌های آموزشی بازیابی کند، که این امر نشت داده‌های آموزشی را تسهیل می‌کند.
+</p>
+</dd>
+</dl>
+</section>
+<section class="section-card">
+<h3 id="section-7" class="anchored">
+۷. بخش هفتم: تکنیک‌های حفظ حریم خصوصی: Differential Privacy و FHE
+</h3>
+<p style="color: var(--color-text-muted); font-size: 1.1rem;">
+معرفی راه‌حل‌های آکادمیک و پیشرفته برای تضمین حریم خصوصی در مدل‌های یادگیری ماشین.
+</p>
+<h4 id="section-7-1" class="anchored">
+۷.۱. مفهوم Differential Privacy (DP)
+</h4>
+<dl>
+<dt>
+استاندارد طلایی حفظ حریم خصوصی
+</dt>
+<dd>
+<p>
+<strong>Differential Privacy (DP)</strong> تضمین می‌کند که حضور یا عدم حضور یک رکورد داده خاص در مجموعه آموزشی، تأثیر قابل توجهی بر خروجی نهایی مدل نداشته باشد. این تضمین با تزریق دقیق <strong>نویز کالیبره شده (Calibrated Noise)</strong> (معمولاً نویز لاپلاس یا گاوسی) به فرآیند آموزش (مانند گرادیان‌ها) انجام می‌شود.
+</p>
+<span class="math display">\[
+    \mathcal{P}(\text{Output} \in S | D) \leq e^{\epsilon} \cdot \mathcal{P}(\text{Output} \in S | D') + \delta
+    \]</span>
+<p>
+که در آن <span class="math inline">\(D\)</span> و <span class="math inline">\(D'\)</span> مجموعه‌های داده همسایه (فقط در یک رکورد متفاوت) هستند.
+</p>
+</dd>
+</dl>
+<h4 id="section-7-2" class="anchored">
+۷.۲. پارامتر <span class="math inline">\(\epsilon\)</span> (اپسیلون) و بودجه حریم خصوصی
+</h4>
+<dl>
+<dt>
+کنترل میزان نویز و میزان نشت اطلاعات
+</dt>
+<dd>
+<p>
+پارامتر <strong><span class="math inline">\(\epsilon\)</span> (Privacy Budget)</strong> میزان نشت اطلاعات را کنترل می‌کند. مقدار <span class="math inline">\(\epsilon\)</span> کمتر (نویز بیشتر) به معنای حریم خصوصی بالاتر، اما کاهش دقت مدل است. سازمان‌ها باید یک <strong>بودجه حریم خصوصی</strong> ثابت برای کل چرخه حیات داده تعریف کنند.
+</p>
+</dd>
+</dl>
+<h4 id="section-7-3" class="anchored">
+۷.۳. رمزنگاری همسانگرد (Homomorphic Encryption - FHE)
+</h4>
+<dl>
+<dt>
+محاسبه روی داده‌های رمزگذاری شده
+</dt>
+<dd>
+<p>
+<strong>Homomorphic Encryption (FHE)</strong> یک تکنیک رمزنگاری است که به شخص ثالث (مانند یک سرویس ابری) اجازه می‌دهد تا محاسبات دلخواه را مستقیماً روی داده‌های رمزگذاری شده انجام دهد و نتیجه را نیز به صورت رمزگذاری شده بازگرداند، بدون اینکه محتوای داده را رمزگشایی کرده باشد. این امر محرمانگی داده‌های ورودی را تضمین می‌کند.
+</p>
+</dd>
+</dl>
+</section>
+<section class="section-card">
+<h3 id="section-8" class="anchored">
+۸. بخش هشتم: ابعاد حقوقی و قانون‌گذاری داده‌ها (GDPR و Right to Explanation)
+</h3>
+<p style="color: var(--color-text-muted); font-size: 1.1rem;">
+تحلیل الزامات حقوقی حیاتی که بر توسعه و استقرار سیستم‌های هوش مصنوعی تأثیر می‌گذارد.
+</p>
+<h4 id="section-8-1" class="anchored">
+۸.۱. قانون GDPR (General Data Protection Regulation)
+</h4>
+<dl>
+<dt>
+تأثیر بر مدل‌های هوش مصنوعی
+</dt>
+<dd>
+<p>
+قانون <strong>GDPR</strong> اتحادیه اروپا (۲۰۱۸) مهم‌ترین چارچوب حقوقی داده‌هاست. این قانون شامل الزامات سخت‌گیرانه‌ای برای <strong>رضایت صریح (Explicit Consent)</strong>، <strong>محدودیت هدف (Purpose Limitation)</strong> و <strong>حداقل‌سازی داده (Data Minimization)</strong> است که مستقیماً بر مجموعه داده‌های آموزشی LLMها تأثیر می‌گذارد.
+</p>
+</dd>
+</dl>
+<h4 id="section-8-2" class="anchored">
+۸.۲. حق توضیح (Right to Explanation)
+</h4>
+<dl>
+<dt>
+شفاف‌سازی تصمیمات خودکار
+</dt>
+<dd>
+<p>
+این حق به افراد اجازه می‌دهد تا در مورد تصمیماتی که منحصراً توسط پردازش خودکار (مانند رد درخواست وام یا استخدام) گرفته شده، توضیحی معنادار درخواست کنند. این امر نیازمند سطح بالایی از <strong>تبیین‌پذیری (Explainability - XAI)</strong> در مدل‌های AI است.
+</p>
+</dd>
+</dl>
+<h4 id="section-8-3" class="anchored">
+۸.۳. مدیریت چرخه حیات داده و حریم خصوصی بر اساس طراحی (Privacy by Design)
+</h4>
+<dl>
+<dt>
+نهادینه‌سازی اصول حریم خصوصی در معماری مدل
+</dt>
+<dd>
+<p>
+اصل <strong>Privacy by Design</strong> ایجاب می‌کند که اصول حریم خصوصی از همان مراحل اولیه طراحی و معماری سیستم هوش مصنوعی در نظر گرفته شود، نه اینکه به عنوان یک وصله امنیتی در انتهای فرآیند اضافه شود.
+</p>
+</dd>
+</dl>
+</section>
+<section class="section-card">
+<h3 id="section-9" class="anchored">
+۹. بخش نهم: چالش‌های اخلاقی هوش مصنوعی، انطباق و XAI
+</h3>
+<p style="color: var(--color-text-muted); font-size: 1.1rem;">
+بررسی الزامات اخلاقی مدل، قانون‌گذاری‌های جدید اتحادیه اروپا و لزوم شفافیت و حکمرانی (Governance).
+</p>
+<h4 id="section-9-1" class="anchored">
+۹.۱. Fairness (انصاف) و بایاس (Bias) در هوش مصنوعی
+</h4>
+<dl>
+<dt>
+انواع بایاس و معیارهای سنجش انصاف
+</dt>
+<dd>
+<p>
+<strong>بایاس</strong> در مدل‌های AI (مانند <strong>Historical Bias</strong> یا <strong>Representation Bias</strong>) ناشی از بازتاب نابرابری‌های اجتماعی در داده‌های آموزشی است. معیارهای <strong>Fairness</strong> مانند <strong>Equal Opportunity Difference</strong> (برابری در نرخ مثبت کاذب یا منفی کاذب) برای سنجش عملکرد مدل‌ها برای گروه‌های جمعیتی مختلف استفاده می‌شوند.
+</p>
+</dd>
+</dl>
+<h4 id="section-9-2" class="anchored">
+۹.۲. قانون EU AI Act (قانون هوش مصنوعی اتحادیه اروپا)
+</h4>
+<dl>
+<dt>
+طبقه‌بندی سیستم‌های هوش مصنوعی بر اساس ریسک
+</dt>
+<dd>
+<p>
+این قانون، هوش مصنوعی را بر اساس ریسک (غیرقابل قبول، پرخطر، ریسک محدود و کم) طبقه‌بندی می‌کند. سیستم‌های <strong>پرخطر (High-Risk)</strong> (مانند سیستم‌های استخدام یا اعطای وام) ملزم به رعایت سخت‌گیرانه‌ترین استانداردها برای <strong>شفافیت، دقت، قابلیت نظارت انسانی</strong> و <strong>حفظ سوابق (Logging)</strong> هستند.
+</p>
+</dd>
+</dl>
+<h4 id="section-9-3" class="anchored">
+۹.۳. تبیین‌پذیری (Explainability - XAI) و Responsible AI
+</h4>
+<dl>
+<dt>
+شفاف‌سازی فرآیندهای استدلال مدل
+</dt>
+<dd>
+<p>
+<strong>Explainable AI (XAI)</strong> به مجموعه تکنیک‌هایی (مانند <strong>LIME</strong> و <strong>SHAP</strong>) اطلاق می‌شود که برای توضیح اینکه چرا یک مدل یک تصمیم خاص گرفته است، استفاده می‌شود. در LLMها، XAI شامل توضیح اینکه کدام بخش از پرامپت یا کدام توکن‌ها بیشترین وزن توجه را در تولید پاسخ نهایی داشته‌اند، می‌شود.
+</p>
+</dd>
+</dl>
+</section>
+<section class="section-card">
+<h3 id="section-10" class="anchored">
+۱۰. بخش دهم: منابع آکادمیک و تمرین‌های تفصیلی
+</h3>
+<p style="color: var(--color-text-muted); font-size: 1.1rem;">
+معرفی منابع اصلی مطالعاتی و تمرین‌های عملی سطح بالا برای پیاده‌سازی و ارزیابی امنیت و اخلاق هوش مصنوعی.
+</p>
+<h4 id="section-10-1" class="anchored">
+۱۰.۱. مراجع آکادمیک کلیدی
+</h4>
+<dl>
+<dt>
+۱. حملات متخاصم و امنیت مدل
+</dt>
+<dd>
+<strong>Goodfellow, I. J. et al.&nbsp;(2015).</strong> <em>Explaining and Harnessing Adversarial Examples.</em> (مقاله بنیان‌گذار حمله FGSM.)
+</dd>
+<dd>
+<strong>Madry, A. et al.&nbsp;(2017).</strong> <em>Towards Deep Learning Models Resistant to Adversarial Attacks.</em> (مقاله معرفی حمله PGD و دفاع Adversarial Training.)
+</dd>
+</dl>
+<dl>
+<dt>
+۲. حریم خصوصی و اخلاق
+</dt>
+<dd>
+<strong>Dwork, C. et al.&nbsp;(2006).</strong> <em>Calibrating Noise to Sensitivity in Private Data Analysis.</em> (مقاله بنیان‌گذار Differential Privacy.)
+</dd>
+<dd>
+<strong>Mitchell, M. et al.&nbsp;(2019).</strong> <em>Model Cards for Model Reporting.</em> (چارچوبی برای مستندسازی اخلاقی مدل‌های AI.)
+</dd>
+</dl>
+<h4 id="section-10-2" class="anchored">
+۱۰.۲. تمرین‌های پیاده‌سازی تفصیلی
+</h4>
+<dl>
+<dt>
+تمرین‌های عملی سطح بالا
+</dt>
+<dd>
+<ul>
+<li>
+<strong>پیاده‌سازی FGSM:</strong> کدنویسی عملی حمله <strong>FGSM</strong> روی یک مدل طبقه‌بندی تصویر (مانند VGG یا ResNet) با استفاده از فریم‌ورک‌هایی مانند PyTorch یا TensorFlow. محاسبه <strong>Adversarial Accuracy</strong> قبل و بعد از حمله.
+</li>
+<li>
+<strong>شبیه‌سازی Model Extraction:</strong> ساخت یک <strong>مدل شبیه (Surrogate Model)</strong> با استفاده از کوئری‌های خروجی یک مدل هدف عمومی و مقایسه دقت و کارایی دو مدل.
+</li>
+<li>
+<strong>تحلیل Fairness:</strong> استفاده از ابزارهایی مانند <strong>Fairlearn</strong> یا <strong>Aequitas</strong> برای اندازه‌گیری <strong>Equal Opportunity Difference</strong> در خروجی یک مدل پیش‌بینی (مانند پیش‌بینی درآمد) برای گروه‌های نژادی یا جنسیتی مختلف.
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+
+
+</main></div>
+
+ <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+ <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="footer-copyright">© 1404 - دانشگاه آزاد اسلامی واحد تهران مرکز</span></p>
+</div>   
+    <div class="nav-footer-center">
+<p><span class="footer-professor-name">استاد : دکتر مریم حاجی اسمعیلی</span></p>
+</div>
+    <div class="nav-footer-right">
+<p><span class="footer-author-name">تهیه و تنظیم: ایلیا نازمهر</span></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

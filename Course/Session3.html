@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fa" xml:lang="fa" dir="rtl"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>session3 – درس هوش مصنوعی</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-fa4b1673990fa3f7be976ac11d59a17c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content column-page" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><h1 style="text-align: center;" class="title display-7">
+جلسه ۳: روش‌شناسی حل مسئله و الگوریتم‌های جستجوی پیشرفته
+</h1></header>
+
+
+
+
+<div style="text-align: center; margin-top: 2rem;">
+
+<h2 class="anchored">
+تحلیل عمیق مدل‌های ریاضی جستجو، بهینه‌سازی منابع و الگوریتم‌های A* و IDA*
+</h2>
+<p style="color: var(--color-text-muted); font-size: 1.1rem;">
+بررسی جزئیات Completeness، Optimality و پیچیدگی‌های محاسباتی الگوریتم‌های ناآگاهانه و آگاهانه.
+</p>
+<hr style="width: 60%; margin: 2rem auto;">
+</div>
+<section class="section-card">
+<h3 class="anchored">
+بخش اول: مدل‌سازی حالت و فرمول‌بندی مسئله جستجو
+</h3>
+<h4 class="anchored">
+۱.۱. تعریف فضای حالت و عناصر مسئله
+</h4>
+<p>
+یک <strong>مسئله جستجوی تک-عاملی (Single-Agent Search Problem)</strong> به صورت رسمی توسط چهار مؤلفه اصلی تعریف می‌شود. هدف اصلی، یافتن یک دنباله اعمال (مسیر) از وضعیت اولیه <span class="math inline">\(S_0\)</span> به یکی از وضعیت‌های هدف <span class="math inline">\(\mathcal{G} \subset \mathcal{S}\)</span> است که کمترین هزینه تجمعی را داشته باشد.
+</p>
+<dl>
+<dt>
+۱. وضعیت شروع (Initial State) <span class="math inline">\(S_0\)</span>
+</dt>
+<dd>
+نقطه‌ای که جستجو از آن آغاز می‌شود: <span class="math inline">\(S_0 \in \mathcal{S}\)</span>.
+</dd>
+<dt>
+۲. مجموعه عملگرها و تابع جانشینی
+</dt>
+<dd>
+مجموعه اعمال ممکن <span class="math inline">\(\mathcal{A}\)</span> و تابع جانشینی (Transition Function) که نحوه تغییر وضعیت را مشخص می‌کند: <span class="math display">\[
+    \text{SUCCESSOR}(s, a) \to s'
+    \]</span>
+</dd>
+<dt>
+۳. آزمون هدف (Goal Test) و هزینه مسیر (Path Cost)
+</dt>
+<dd>
+هزینه مسیر <span class="math inline">\(g(n)\)</span>، هزینه تجمعی گام‌ها از <span class="math inline">\(S_0\)</span> تا گره <span class="math inline">\(n\)</span> است. هدف، کمینه‌سازی این مقدار است: <span class="math display">\[
+    g(n) = \sum_{i=1}^{k} \text{Cost}(s_{i-1}, a_i, s_i)
+    \]</span>
+</dd>
+</dl>
+<h4 class="anchored">
+۱.۲. معیار بهینه‌سازی منابع محاسباتی
+</h4>
+<p>
+الگوریتم‌های جستجو با چهار معیار اصلی ارزیابی می‌شوند. فرض می‌شود <span class="math inline">\(b\)</span> عامل انشعاب، <span class="math inline">\(d\)</span> عمق راه‌حل بهینه و <span class="math inline">\(m\)</span> حداکثر عمق فضای حالت باشد.
+</p>
+<table>
+<thead>
+<tr>
+<th>
+معیار
+</th>
+<th>
+توضیح
+</th>
+<th>
+نماد ریاضی (مرتبه بزرگی)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<strong>Completeness</strong> (کامل بودن)
+</td>
+<td>
+تضمین یافتن راه‌حل در صورت وجود.
+</td>
+<td>
+بله/خیر
+</td>
+</tr>
+<tr>
+<td>
+<strong>Optimality</strong> (بهینگی)
+</td>
+<td>
+تضمین یافتن کم‌هزینه‌ترین راه‌حل.
+</td>
+<td>
+<span class="math inline">\(\pi^* = \operatorname{argmin}_{\pi} g(\text{Goal})\)</span>
+</td>
+</tr>
+<tr>
+<td>
+<strong>Time Complexity</strong> (زمانی)
+</td>
+<td>
+تعداد گره‌های تولید شده.
+</td>
+<td>
+<span class="math inline">\(O(\cdot)\)</span>
+</td>
+</tr>
+<tr>
+<td>
+<strong>Space Complexity</strong> (حافظه)
+</td>
+<td>
+حجم حافظه برای ذخیره گره‌های در حال بررسی (Frontier).
+</td>
+<td>
+<span class="math inline">\(O(\cdot)\)</span>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="section-card">
+<h3 class="anchored">
+بخش دوم: تحلیل تفصیلی الگوریتم‌های جستجوی ناآگاهانه
+</h3>
+<p>
+الگوریتم‌های ناآگاهانه (Blind Search) هیچ اطلاعاتی از فاصله یا جهت هدف ندارند و در فضای حالت به صورت روشمند (Systematic) عمل می‌کنند.
+</p>
+<h4 class="anchored">
+۲.۱. جستجوی اول سطح (Breadth-First Search - BFS)
+</h4>
+<dl>
+<dt>
+تئوری عملکرد
+</dt>
+<dd>
+BFS یک الگوریتم <strong>کامل</strong> و <strong>بهینه</strong> است، به شرطی که هزینه هر گام (Edge Cost) برابر و متناهی باشد.
+</dd>
+<dt>
+تحلیل پیچیدگی
+</dt>
+<dd>
+<p>
+تعداد گره‌های تولید شده: <span class="math inline">\(1 + b + b^2 + \dots + b^d = O(b^d)\)</span>
+</p>
+<ul>
+<li>
+<strong>Time Complexity:</strong> <span class="math inline">\(O(b^d)\)</span>.
+</li>
+<li>
+<strong>Space Complexity:</strong> <span class="math inline">\(O(b^d)\)</span>. (به دلیل ذخیره تمام گره‌های لایه <span class="math inline">\(d\)</span>).
+</li>
+</ul>
+<strong>نتیجه‌گیری علمی:</strong> BFS به دلیل پیچیدگی حافظه نمایی، در مسائل با عمق زیاد (مانند <span class="math inline">\(d&gt;15\)</span>) <strong>عملیاتی نیست</strong>.
+</dd>
+</dl>
+<h4 class="anchored">
+۲.۲. جستجوی اول هزینه یکنواخت (Uniform Cost Search - UCS)
+</h4>
+<dl>
+<dt>
+تئوری عملکرد
+</dt>
+<dd>
+UCS نسخه بهینه‌سازی شده BFS برای گراف‌های با یال‌های وزن‌دار (هزینه متغیر) است. این الگوریتم گره‌ای را گسترش می‌دهد که کمترین <span class="math inline">\(g(n)\)</span> را داشته باشد. <span class="math display">\[\text{Selection} = \underset{n \in \text{Frontier}}{\operatorname{argmin}} \ g(n)\]</span>
+</dd>
+<dt>
+تحلیل پیچیدگی
+</dt>
+<dd>
+<p>
+پیچیدگی UCS نه به عمق <span class="math inline">\(d\)</span>، بلکه به هزینه مسیر بهینه <span class="math inline">\(C^*\)</span> و کمترین هزینه گام <span class="math inline">\(\epsilon &gt; 0\)</span> بستگی دارد. <span class="math inline">\(\epsilon\)</span> تضمین می‌کند که تعداد گام‌ها نامتناهی نشود.
+</p>
+<ul>
+<li>
+<strong>Time Complexity:</strong> <span class="math inline">\(O(b^{1+C^*/\epsilon})\)</span>.
+</li>
+<li>
+<strong>Optimality:</strong> <strong>بله</strong>. UCS در هر شرایطی ارزان‌ترین مسیر را پیدا می‌کند.
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+<section class="section-card">
+<h3 class="anchored">
+بخش سوم: جستجوی آگاهانه (Informed Search) و مدل‌های اکتشافی
+</h3>
+<h4 class="anchored">
+۳.۱. تابع ارزیابی <span class="math inline">\(f(n)\)</span> در الگوریتم A* (A-Star Search)
+</h4>
+<p>
+الگوریتم A* با ترکیب هزینه واقعی تا گره <span class="math inline">\(n\)</span> (<span class="math inline">\(g(n)\)</span>) و هزینه تخمینی باقی‌مانده (<span class="math inline">\(h(n)\)</span>)، به صورت هوشمندانه مسیر را هدایت می‌کند.
+</p>
+<span class="math display">\[
+f(n) = g(n) + h(n)
+\]</span>
+<p>
+A* به عنوان یک الگوریتم <strong>Best-First Search</strong> عمل می‌کند که تابع ارزیابی آن <span class="math inline">\(f(n)\)</span> است.
+</p>
+<h4 class="anchored">
+۳.۲. شرایط بهینگی و مدل‌های ریاضی Heuristic
+</h4>
+<p>
+برای حفظ بهینگی (Optimality) A*، تابع اکتشافی <span class="math inline">\(h(n)\)</span> باید دو شرط اساسی را برآورده کند:
+</p>
+<dl>
+<dt>
+۱. سازگاری (Admissibility)
+</dt>
+<dd>
+تابع اکتشافی باید همواره یک کران پایین (Lower Bound) برای هزینه واقعی بهینه تا هدف (<span class="math inline">\(h^*(n)\)</span>) ارائه دهد: <span class="math display">\[
+    h(n) \le h^*(n) \quad \forall n
+    \]</span> <strong>تضمین:</strong> اگر <span class="math inline">\(h(n)\)</span> سازگار باشد، A* <strong>بهینه</strong> است.
+</dd>
+<dt>
+۲. یکنواختی (Consistency)
+</dt>
+<dd>
+تخمین هزینه <span class="math inline">\(h(n)\)</span> باید با هزینه واقعی گام‌ها سازگار باشد. برای هر یال از <span class="math inline">\(n\)</span> به <span class="math inline">\(n'\)</span> با هزینه <span class="math inline">\(c(n, n')\)</span>: <span class="math display">\[
+    h(n) \le c(n, n') + h(n')
+    \]</span> <strong>تضمین:</strong> اگر <span class="math inline">\(h(n)\)</span> یکنواخت باشد، A* در اولین باری که گره‌ای را گسترش می‌دهد، مسیر بهینه به آن گره را پیدا کرده است.
+</dd>
+</dl>
+<h4 class="anchored">
+۳.۳. پیچیدگی و کارایی A*
+</h4>
+<p>
+پیچیدگی زمانی A* به <strong>کیفیت</strong> تابع اکتشافی بستگی دارد. اگر <span class="math inline">\(h(n)\)</span> بسیار به <span class="math inline">\(h^*(n)\)</span> نزدیک باشد، A* تقریباً به صورت خطی پیش می‌رود، اما در حالت کلی همچنان از مرتبه نمایی است: <span class="math inline">\(O(b^{d'})\)</span> که <span class="math inline">\(d'\)</span> معمولاً بسیار کوچکتر از <span class="math inline">\(d\)</span> است. A* نیز مانند BFS، از نظر حافظه، یک الگوریتم <strong>ناکارآمد</strong> است (<span class="math inline">\(O(b^{d'})\)</span>).
+</p>
+<h4 class="anchored">
+۳.۴. الگوریتم IDA* (Iterative Deepening A*)
+</h4>
+<p>
+برای غلبه بر مشکل حافظه A*، از <strong>IDA*</strong> استفاده می‌شود. این الگوریتم جستجوی <strong>DFS</strong> را با یک محدودیت آگاهانه (Informed Cutoff) بر اساس مقدار <strong><span class="math inline">\(f(n)\)</span></strong> انجام می‌دهد.
+</p>
+<dl>
+<dt>
+فرآیند عملیاتی
+</dt>
+<dd>
+IDA* به صورت تکراری با محدودیت <span class="math inline">\(L\)</span> آغاز می‌شود. در هر تکرار، محدودیت <span class="math inline">\(L\)</span> به کمترین مقدار <span class="math inline">\(f(n)\)</span> که در تکرار قبلی از آن عبور شده، افزایش می‌یابد.
+</dd>
+<dt>
+تحلیل کارایی
+</dt>
+<dd>
+<ul>
+<li>
+<strong>Optimality:</strong> <strong>بله</strong> (اگر <span class="math inline">\(h(n)\)</span> سازگار باشد).
+</li>
+<li>
+<strong>Space Complexity:</strong> <span class="math inline">\(O(b \cdot d)\)</span>. <strong>(بهترین در حافظه)</strong>.
+</li>
+<li>
+<strong>Time Complexity:</strong> <span class="math inline">\(O(b^d)\)</span> (از نظر زمانی مشابه A* است، اما به دلیل تکرارها کمی کندتر).
+</li>
+</ul>
+<strong>نتیجه‌گیری:</strong> IDA* معمولاً الگوریتم <strong>بهینه</strong> انتخابی است زیرا تعادلی عالی بین بهینگی و مصرف کم حافظه ایجاد می‌کند.
+</dd>
+</dl>
+</section>
+<section class="section-card">
+<h3 class="anchored">
+بخش چهارم: شبیه‌سازی پایتون و مدل‌های اکتشافی پیشرفته
+</h3>
+<h4 class="anchored">
+۴.۱. کد پایتون ۱: پیاده‌سازی اصلی A* با توضیحات علمی
+</h4>
+<div id="a-star-simulation-detailed" class="cell" data-execution_count="1">
+<details open="" class="code-fold">
+<summary>پیاده‌سازی A* با توضیحات آکادمیک و مدیریت صف اولویت</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> heapq <span class="co"># استفاده از heapq برای پیاده‌سازی صف اولویت (Priority Queue)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># تابع Heuristic h(n) - تخمین Admissible فاصله تا هدف</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> heuristic(node, goal<span class="op">=</span><span class="st">'G'</span>):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># فرض بر این است که این مقادیر از یک تابع Consistent/Admissible استخراج شده‌اند.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    distances <span class="op">=</span> {<span class="st">'S'</span>: <span class="dv">10</span>, <span class="st">'A'</span>: <span class="dv">8</span>, <span class="st">'B'</span>: <span class="dv">6</span>, <span class="st">'C'</span>: <span class="dv">4</span>, <span class="st">'D'</span>: <span class="dv">2</span>, <span class="st">'G'</span>: <span class="dv">0</span>}</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> distances.get(node, <span class="bu">float</span>(<span class="st">'inf'</span>))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># تعریف گراف وزنی (مدل فضای حالت)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> {</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'S'</span>: [(<span class="st">'A'</span>, <span class="dv">1</span>), (<span class="st">'B'</span>, <span class="dv">5</span>)], <span class="co"># یال‌ها: (گره مقصد, هزینه c(n, n'))</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'A'</span>: [(<span class="st">'C'</span>, <span class="dv">2</span>), (<span class="st">'D'</span>, <span class="dv">4</span>)],</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'B'</span>: [(<span class="st">'D'</span>, <span class="dv">1</span>)],</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'C'</span>: [(<span class="st">'G'</span>, <span class="dv">7</span>)],</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'D'</span>: [(<span class="st">'G'</span>, <span class="dv">3</span>)],</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'G'</span>: []</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> a_star_search(start_node, goal_node):</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># صف اولویت شامل: (f_cost, g_cost, node, path)</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    priority_queue <span class="op">=</span> [(<span class="dv">0</span>, <span class="dv">0</span>, start_node, [start_node])]</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># دیکشنری g_costs برای نگهداری بهترین هزینه g(n) فعلی یافت شده برای هر گره</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    g_costs <span class="op">=</span> {start_node: <span class="dv">0</span>} </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> priority_queue:</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        <span class="co"># استخراج گره با کمترین f(n) (تابع ارزیابی A*)</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        f_cost, g_cost, current_node, path <span class="op">=</span> heapq.heappop(priority_queue)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current_node <span class="op">==</span> goal_node:</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>            <span class="co"># راه‌حل بهینه یافت شد (تضمین شده توسط Admissibility)</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> path, g_cost </span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># شرط پرش: گره‌ای که قبلاً با هزینه کمتر پردازش شده باشد نادیده گرفته می‌شود.</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> g_cost <span class="op">&gt;</span> g_costs.get(current_node, <span class="bu">float</span>(<span class="st">'inf'</span>)):</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> neighbor, edge_cost <span class="kw">in</span> graph.get(current_node, []):</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>            <span class="co"># محاسبه هزینه واقعی مسیر جدید تا همسایه: g(n') = g(n) + c(n, n')</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>            new_g_cost <span class="op">=</span> g_cost <span class="op">+</span> edge_cost</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>            <span class="co"># اگر مسیر جدید به همسایه بهتر است (کم هزینه‌تر)</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> neighbor <span class="kw">not</span> <span class="kw">in</span> g_costs <span class="kw">or</span> new_g_cost <span class="op">&lt;</span> g_costs[neighbor]:</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>                g_costs[neighbor] <span class="op">=</span> new_g_cost</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>                h_cost <span class="op">=</span> heuristic(neighbor)</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>                <span class="co"># محاسبه تابع ارزیابی f(n') = g(n') + h(n')</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>                new_f_cost <span class="op">=</span> new_g_cost <span class="op">+</span> h_cost</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>                new_path <span class="op">=</span> path <span class="op">+</span> [neighbor]</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>                <span class="co"># اضافه کردن گره به صف اولویت</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>                heapq.heappush(priority_queue, (new_f_cost, new_g_cost, neighbor, new_path))</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"Goal not reachable"</span>, <span class="bu">float</span>(<span class="st">'inf'</span>)</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="co"># اجرای جستجو</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>optimal_path, final_cost <span class="op">=</span> a_star_search(<span class="st">'S'</span>, <span class="st">'G'</span>)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"مسیر بهینه (A*): </span><span class="sc">{</span>optimal_path<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"هزینه بهینه مسیر: </span><span class="sc">{</span>final_cost<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>مسیر بهینه (A*): ['S', 'A', 'D', 'G']
+هزینه بهینه مسیر: 8</code></pre>
+</div>
+</div>
+<h4 class="anchored">
+۴.۲. کد پایتون ۲: مدل اکتشافی Manhattan Distance
+</h4>
+<p>
+تابع <strong>Manhattan Distance</strong> (فاصله منهتن) یک Heuristic <strong>Admissible و Consistent</strong> برای مسائل حرکتی شبکه‌ای است، مانند پازل ۸ و مسیرهای شهری.
+</p>
+<p><span class="math display">\[
+h_{\text{Manhattan}}(n) = \sum_{\text{tiles}} \left( |x_n - x_{\text{goal}}| + |y_n - y_{\text{goal}}| \right)
+\]</span></p>
+<div id="manhattan-heuristic-detailed" class="cell" data-execution_count="2">
+<details open="" class="code-fold">
+<summary>محاسبه دقیق Manhattan Distance برای مسائل گسسته</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># مختصات وضعیت‌ها (برای یک شبکه فرضی)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>node_coords <span class="op">=</span> {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'A'</span>: (<span class="dv">1</span>, <span class="dv">5</span>), <span class="st">'B'</span>: (<span class="dv">3</span>, <span class="dv">2</span>), <span class="st">'C'</span>: (<span class="dv">5</span>, <span class="dv">5</span>), <span class="st">'D'</span>: (<span class="dv">7</span>, <span class="dv">2</span>), <span class="st">'G'</span>: (<span class="dv">8</span>, <span class="dv">8</span>) <span class="co"># G: وضعیت هدف</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> manhattan_distance(node_name, goal_name<span class="op">=</span><span class="st">'G'</span>):</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">    محاسبه فاصله منهتن. </span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">    این مقدار همیشه کران پایینی از تعداد گام‌های مورد نیاز در شبکه است،</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">    لذا یک Heuristic Admissible و Consistent است.</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> node_name <span class="op">==</span> goal_name:</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    x1, y1 <span class="op">=</span> node_coords[node_name]</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    x2, y2 <span class="op">=</span> node_coords[goal_name]</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># محاسبه تفاضل قدر مطلق مختصات</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    distance <span class="op">=</span> <span class="bu">abs</span>(x1 <span class="op">-</span> x2) <span class="op">+</span> <span class="bu">abs</span>(y1 <span class="op">-</span> y2)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> distance</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co"># تست تابع اکتشافی</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>nodes_to_test <span class="op">=</span> [<span class="st">'A'</span>, <span class="st">'B'</span>, <span class="st">'C'</span>, <span class="st">'D'</span>]</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"مقادیر Heuristic (Manhattan Distance) تا G:"</span>)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> node <span class="kw">in</span> nodes_to_test:</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    h_value <span class="op">=</span> manhattan_distance(node)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  h(</span><span class="sc">{</span>node<span class="sc">}</span><span class="ss">) = </span><span class="sc">{</span>h_value<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>مقادیر Heuristic (Manhattan Distance) تا G:
+  h(A) = 10
+  h(B) = 11
+  h(C) = 6
+  h(D) = 7</code></pre>
+</div>
+</div>
+<h4 class="anchored">
+۴.۳. مراجع آکادمیک و تمرین‌های تفصیلی
+</h4>
+<dl>
+<dt>
+۱. منابع اصلی
+</dt>
+<dd>
+<strong>Russell, S., &amp; Norvig, P. (2020).</strong> <em>Artificial Intelligence: A Modern Approach (4th ed.).</em> (فصول ۳ و ۴). (مطالعه عمیق تحلیل پیچیدگی و کارایی A*).
+</dd>
+<dt>
+۲. تمرین‌های علمی سطح بالا
+</dt>
+<dd>
+<ul>
+<li>
+<strong>برنامه‌ریزی و Heuristic:</strong> پیاده‌سازی و تحلیل عملکرد A* برای حل مسئله <strong>پازل ۸ (8-Puzzle)</strong>. دو تابع Heuristic (تعداد کاشی‌های ناصحیح و مجموع فاصله منهتن) را تعریف و مقایسه کنید. ثابت کنید که هر دو تابع، Admissible هستند.
+</li>
+<li>
+<strong>اثبات Consistency:</strong> اثبات ریاضی شرط Consistency برای تابع Heuristic Manhattan Distance در یک شبکه گسسته.
+</li>
+<li>
+<strong>مقایسه منابع IDA* و A*</strong>: طراحی یک محیط وظیفه‌ای که در آن <strong>IDA*</strong> به دلیل محدودیت‌های حافظه، عملکرد بهتری نسبت به <strong>A*</strong> داشته باشد.
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+
+
+</main></div>
+
+ <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+ <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="footer-copyright">© 1404 - دانشگاه آزاد اسلامی واحد تهران مرکز</span></p>
+</div>   
+    <div class="nav-footer-center">
+<p><span class="footer-professor-name">استاد : دکتر مریم حاجی اسمعیلی</span></p>
+</div>
+    <div class="nav-footer-right">
+<p><span class="footer-author-name">تهیه و تنظیم: ایلیا نازمهر</span></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
